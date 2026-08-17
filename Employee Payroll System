@@ -1,0 +1,144 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Employee {
+    int id;
+    String name;
+    String department;
+    double basicSalary;
+
+    Employee(int id, String name, String department, double basicSalary) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+        this.basicSalary = basicSalary;
+    }
+
+    double calculateHRA() {
+        return basicSalary * 0.20;   // 20% HRA
+    }
+
+    double calculateDA() {
+        return basicSalary * 0.10;   // 10% DA
+    }
+
+    double calculateGrossSalary() {
+        return basicSalary + calculateHRA() + calculateDA();
+    }
+
+    double calculatePF() {
+        return basicSalary * 0.12;   // 12% PF
+    }
+
+    double calculateTax() {
+        return calculateGrossSalary() * 0.05;   // 5% tax
+    }
+
+    double calculateNetSalary() {
+        return calculateGrossSalary() - calculatePF() - calculateTax();
+    }
+
+    void displayEmployee() {
+        System.out.println("\n----- Employee Details -----");
+        System.out.println("Employee ID     : " + id);
+        System.out.println("Employee Name   : " + name);
+        System.out.println("Department      : " + department);
+        System.out.println("Basic Salary    : " + basicSalary);
+        System.out.println("HRA (20%)       : " + calculateHRA());
+        System.out.println("DA (10%)        : " + calculateDA());
+        System.out.println("Gross Salary    : " + calculateGrossSalary());
+        System.out.println("PF (12%)        : " + calculatePF());
+        System.out.println("Tax (5%)        : " + calculateTax());
+        System.out.println("Net Salary      : " + calculateNetSalary());
+    }
+}
+
+public class EmployeePayrollSystem {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        int choice;
+
+        do {
+            System.out.println("\n==============================");
+            System.out.println("     EMPLOYEE PAYROLL SYSTEM");
+            System.out.println("==============================");
+            System.out.println("1. Add Employee");
+            System.out.println("2. Display All Employees");
+            System.out.println("3. Search Employee");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter Employee ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Enter Employee Name: ");
+                    String name = sc.nextLine();
+
+                    System.out.print("Enter Department: ");
+                    String department = sc.nextLine();
+
+                    System.out.print("Enter Basic Salary: ");
+                    double salary = sc.nextDouble();
+
+                    Employee employee =
+                            new Employee(id, name, department, salary);
+
+                    employees.add(employee);
+
+                    System.out.println("Employee added successfully!");
+                    break;
+
+                case 2:
+                    if (employees.isEmpty()) {
+                        System.out.println("No employees found.");
+                    } else {
+                        System.out.println("\n===== ALL EMPLOYEES =====");
+
+                        for (Employee e : employees) {
+                            e.displayEmployee();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter Employee ID to search: ");
+                    int searchId = sc.nextInt();
+
+                    boolean found = false;
+
+                    for (Employee e : employees) {
+                        if (e.id == searchId) {
+                            e.displayEmployee();
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("Employee not found.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Thank you for using Employee Payroll System!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+        } while (choice != 4);
+
+        sc.close();
+    }
+}
